@@ -1,39 +1,42 @@
 package com.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Category {
-    private int categoryID;
+    private static List<Category> categories = new ArrayList<>();
+    private int categoryId;
     private String categoryName;
     private String description;
     private String creationDate;
     private String updateDate;
     private static int IDcounter = 1;
 
-    public Category(int categoryID, String categoryName, String description) {
-        this.categoryID = categoryID;
+    public Category(int categoryId, String categoryName, String description) {
+        this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.description = description;
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         this.creationDate = now.format(dateTimeFormatter);
+        categories.add(this);
     }
 
     public Category(String categoryName, String description) {
-        this.categoryID = IDcounter++;
+        this.categoryId = IDcounter++;
         this.categoryName = categoryName;
         this.description = description;
-
+        categories.add(this);
     }
 
 
     @Override
     public String toString() {
         return "Category{" +
-                "categoryID=" + categoryID +
+                "categoryID=" + categoryId +
                 ", categoryName='" + categoryName + '\'' +
                 ", description='" + description + '\'' +
                 ", creationDate='" + creationDate + '\'' +
@@ -41,8 +44,8 @@ public class Category {
                 '}';
     }
 
-    public int getCategoryID() {
-        return categoryID;
+    public int getCategoryId() {
+        return categoryId;
     }
 
 
@@ -76,11 +79,11 @@ public class Category {
         if (this == o) return true;
         if (!(o instanceof Category)) return false;
         Category category = (Category) o;
-        return categoryID == category.categoryID && Objects.equals(categoryName, category.categoryName) && Objects.equals(description, category.description) && Objects.equals(creationDate, category.creationDate) && Objects.equals(updateDate, category.updateDate);
+        return categoryId == category.categoryId && Objects.equals(categoryName, category.categoryName) && Objects.equals(description, category.description) && Objects.equals(creationDate, category.creationDate) && Objects.equals(updateDate, category.updateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryID, categoryName, description, creationDate, updateDate);
+        return Objects.hash(categoryId, categoryName, description, creationDate, updateDate);
     }
 }

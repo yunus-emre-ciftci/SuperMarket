@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Products {
-    Category category;
+public class Product {
+    SubCategory subCategory;
     private int barcode;
     private String productName;
     private String description;
@@ -18,8 +18,8 @@ public class Products {
     private String creationProductDate;
 
 
-    public Products(Category category, int barcode, String productName, String description, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
-        this.category = category;
+    public Product(SubCategory subCategory, int barcode, String productName, String description, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
+        this.subCategory = subCategory;
         this.barcode = barcode;
         this.productName = productName;
         this.description = description;
@@ -33,8 +33,8 @@ public class Products {
         this.creationProductDate = now.format(dateTimeFormatter);
     }
 
-    public Products(Category category, int barcode, String productName, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
-        this.category = category;
+    public Product(SubCategory subCategory, int barcode, String productName, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
+        this.subCategory = subCategory;
         this.barcode = barcode;
         this.productName = productName;
         this.price = price;
@@ -47,25 +47,8 @@ public class Products {
         this.creationProductDate = now.format(dateTimeFormatter);
     }
 
-    @Override
-    public String toString() {
-        return "Products{" +
-                "category=" + category +
-                ", barcode=" + barcode +
-                ", productName='" + productName + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", weight=" + weight +
-                ", ProductionDate='" + productionDate + '\'' +
-                ", expirationDate='" + expirationDate + '\'' +
-                ", stockQuantity=" + stockQuantity +
-                ", placeOfProduction='" + placeOfProduction + '\'' +
-                ", creationProductDate='" + creationProductDate + '\'' +
-                '}';
-    }
-
-    public Category getCategory() {
-        return category;
+    public SubCategory getSubCategory() {
+        return subCategory;
     }
 
     public int getBarcode() {
@@ -106,10 +89,6 @@ public class Products {
 
     public String getCreationProductDate() {
         return creationProductDate;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public void setBarcode(int barcode) {
@@ -155,13 +134,13 @@ public class Products {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Products)) return false;
-        Products products = (Products) o;
-        return barcode == products.barcode && Double.compare(price, products.price) == 0 && Double.compare(weight, products.weight) == 0 && stockQuantity == products.stockQuantity && Objects.equals(category, products.category) && Objects.equals(productName, products.productName) && Objects.equals(description, products.description) && Objects.equals(productionDate, products.productionDate) && Objects.equals(expirationDate, products.expirationDate) && Objects.equals(placeOfProduction, products.placeOfProduction) && Objects.equals(creationProductDate, products.creationProductDate);
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return barcode == product.barcode && Double.compare(price, product.price) == 0 && Double.compare(weight, product.weight) == 0 && stockQuantity == product.stockQuantity && Objects.equals(subCategory, product.subCategory) && Objects.equals(productName, product.productName) && Objects.equals(description, product.description) && Objects.equals(productionDate, product.productionDate) && Objects.equals(expirationDate, product.expirationDate) && Objects.equals(placeOfProduction, product.placeOfProduction) && Objects.equals(creationProductDate, product.creationProductDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(category, barcode, productName, description, price, weight, productionDate, expirationDate, stockQuantity, placeOfProduction, creationProductDate);
+        return Objects.hash(subCategory, barcode, productName, description, price, weight, productionDate, expirationDate, stockQuantity, placeOfProduction, creationProductDate);
     }
 }
