@@ -1,11 +1,14 @@
-package com.model;
+package com.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Product {
-    SubCategory subCategory;
+    private static List<Product> allProducts = new ArrayList<>();
+    private SubCategory subCategory;
     private int barcode;
     private String productName;
     private String description;
@@ -31,6 +34,8 @@ public class Product {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         this.creationProductDate = now.format(dateTimeFormatter);
+        allProducts.add(this);
+
     }
 
     public Product(SubCategory subCategory, int barcode, String productName, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
@@ -45,6 +50,11 @@ public class Product {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         this.creationProductDate = now.format(dateTimeFormatter);
+        allProducts.add(this);
+    }
+
+    public List<Product> getAllProducts() {
+        return allProducts;
     }
 
     public SubCategory getSubCategory() {
@@ -90,6 +100,7 @@ public class Product {
     public String getCreationProductDate() {
         return creationProductDate;
     }
+
 
     public void setBarcode(int barcode) {
         this.barcode = barcode;

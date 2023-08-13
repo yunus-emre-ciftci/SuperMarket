@@ -1,4 +1,4 @@
-package com.model;
+package com.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +43,10 @@ public class SubCategory {
 
     public String getDescription() {
         return description;
+    }
+
+    public static List<SubCategory> getSubCategories() {
+        return subCategories;
     }
 
     public void setSubCategoryId(int subCategoryId) {

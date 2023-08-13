@@ -1,4 +1,4 @@
-package com.model;
+package com.domain;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +13,6 @@ public class Category {
     private String description;
     private String creationDate;
     private String updateDate;
-    private static int IDcounter = 1;
 
     public Category(int categoryId, String categoryName, String description) {
         this.categoryId = categoryId;
@@ -22,13 +21,6 @@ public class Category {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         this.creationDate = now.format(dateTimeFormatter);
-        categories.add(this);
-    }
-
-    public Category(String categoryName, String description) {
-        this.categoryId = IDcounter++;
-        this.categoryName = categoryName;
-        this.description = description;
         categories.add(this);
     }
 
@@ -69,9 +61,33 @@ public class Category {
     }
 
 
-    public static int getIDcounter() {
-        return IDcounter;
+
+
+    public static List<Category> getCategories() {
+        return categories;
     }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+
 
 
     @Override
