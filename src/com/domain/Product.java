@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Product {
-    private static List<Product> allProducts = new ArrayList<>();
     private SubCategory subCategory;
     private int barcode;
     private String productName;
@@ -18,25 +17,10 @@ public class Product {
     private String expirationDate;
     private int stockQuantity;
     private String placeOfProduction;
-    private String creationProductDate;
+    private LocalDateTime creationProductDate;
+    private LocalDateTime updateDate;
+    private static List<Product> allProducts = new ArrayList<>();
 
-
-    public Product(SubCategory subCategory, int barcode, String productName, String description, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
-        this.subCategory = subCategory;
-        this.barcode = barcode;
-        this.productName = productName;
-        this.description = description;
-        this.price = price;
-        this.weight = weight;
-        this.stockQuantity = stockQuantity;
-        this.placeOfProduction = placeOfProduction;
-        this.expirationDate = expirationDate;
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        this.creationProductDate = now.format(dateTimeFormatter);
-        allProducts.add(this);
-
-    }
 
     public Product(SubCategory subCategory, int barcode, String productName, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
         this.subCategory = subCategory;
@@ -47,9 +31,15 @@ public class Product {
         this.stockQuantity = stockQuantity;
         this.placeOfProduction = placeOfProduction;
         this.expirationDate = expirationDate;
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        this.creationProductDate = now.format(dateTimeFormatter);
+        this.creationProductDate = LocalDateTime.now();
+        allProducts.add(this);
+
+    }
+
+    public Product(SubCategory subCategory, int barcode, String productName, String description, double price, double weight, int stockQuantity, String placeOfProduction, String expirationDate) {
+        this(subCategory, barcode, productName, price, weight, stockQuantity, placeOfProduction, expirationDate);
+        this.description = description;
+        this.creationProductDate = LocalDateTime.now();
         allProducts.add(this);
     }
 
@@ -97,10 +87,13 @@ public class Product {
         return placeOfProduction;
     }
 
-    public String getCreationProductDate() {
+    public LocalDateTime getCreationProductDate() {
         return creationProductDate;
     }
 
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
 
     public void setBarcode(int barcode) {
         this.barcode = barcode;
@@ -138,8 +131,26 @@ public class Product {
         this.placeOfProduction = placeOfProduction;
     }
 
-    public void setCreationProductDate(String creationProductDate) {
-        this.creationProductDate = creationProductDate;
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "subCategory=" + subCategory +
+                ", barcode=" + barcode +
+                ", productName='" + productName + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", weight=" + weight +
+                ", productionDate='" + productionDate + '\'' +
+                ", expirationDate='" + expirationDate + '\'' +
+                ", stockQuantity=" + stockQuantity +
+                ", placeOfProduction='" + placeOfProduction + '\'' +
+                ", creationProductDate=" + creationProductDate +
+                ", updateDate=" + updateDate +
+                '}';
     }
 
     @Override
@@ -147,11 +158,11 @@ public class Product {
         if (this == o) return true;
         if (!(o instanceof Product)) return false;
         Product product = (Product) o;
-        return barcode == product.barcode && Double.compare(price, product.price) == 0 && Double.compare(weight, product.weight) == 0 && stockQuantity == product.stockQuantity && Objects.equals(subCategory, product.subCategory) && Objects.equals(productName, product.productName) && Objects.equals(description, product.description) && Objects.equals(productionDate, product.productionDate) && Objects.equals(expirationDate, product.expirationDate) && Objects.equals(placeOfProduction, product.placeOfProduction) && Objects.equals(creationProductDate, product.creationProductDate);
+        return barcode == product.barcode && Double.compare(price, product.price) == 0 && Double.compare(weight, product.weight) == 0 && stockQuantity == product.stockQuantity && Objects.equals(subCategory, product.subCategory) && Objects.equals(productName, product.productName) && Objects.equals(description, product.description) && Objects.equals(productionDate, product.productionDate) && Objects.equals(expirationDate, product.expirationDate) && Objects.equals(placeOfProduction, product.placeOfProduction) && Objects.equals(creationProductDate, product.creationProductDate) && Objects.equals(updateDate, product.updateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subCategory, barcode, productName, description, price, weight, productionDate, expirationDate, stockQuantity, placeOfProduction, creationProductDate);
+        return Objects.hash(subCategory, barcode, productName, description, price, weight, productionDate, expirationDate, stockQuantity, placeOfProduction, creationProductDate, updateDate);
     }
 }
