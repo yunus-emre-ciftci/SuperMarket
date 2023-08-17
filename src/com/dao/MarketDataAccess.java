@@ -9,7 +9,8 @@ import java.util.ArrayList;
 public interface MarketDataAccess {
     void addProduct(Product newProduct);
     void printAllProduct();
-    Product getProductByBarcode(int barcode);
+    public Product getIdByBarcode(int productId);
+
     ArrayList<Product> getProductsByCategory(Category category);
     ArrayList<Product> getProductsBySubCategory(SubCategory subCategory);
     ArrayList<Product> getExpiredProducts();
