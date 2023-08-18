@@ -11,28 +11,38 @@ import java.util.ArrayList;
 
 public class StockJDBC implements MarketDataAccess {
     @Override
+    public void addCategory(Category newCategory) {
+
+    }
+
+    @Override
+    public void addSubCategory(SubCategory newSubCategory) {
+
+    }
+
+    @Override
     public void addProduct(Product newProduct) {
         String addQuery = "INSERT INTO t_product (product_id, subcategory_id, product_name, description,\n" +
-                "    price, weight, production_date, expiration_date, stock_quantity,\n" +
-                "    place_of_production, creation_product_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "    price, expiration_date, stock_quantity,\n" +
+                "     creation_product_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connect = DBDataSource.connect();
              PreparedStatement preparedStatement = connect.prepareStatement(addQuery);
         ) {
-            preparedStatement.setInt(1,newProduct.getProductId());
-            preparedStatement.setInt(2,newProduct.getSubCategory().getSubCategoryId());
-            preparedStatement.setString(3,newProduct.getProductName());
+            preparedStatement.setInt(1, newProduct.getProductId());
+            preparedStatement.setInt(2, newProduct.getSubCategory().getSubCategoryId());
+            preparedStatement.setString(3, newProduct.getProductName());
             preparedStatement.setString(4, newProduct.getDescription());
-            preparedStatement.setDouble(5,newProduct.getPrice());
-            preparedStatement.setDouble(6,newProduct.getWeight());
-            preparedStatement.setTimestamp(7, Timestamp.valueOf(newProduct.getProductionDate()));
-            preparedStatement.setTimestamp(8, Timestamp.valueOf(newProduct.getExpirationDate()));
-            preparedStatement.setInt(9,newProduct.getStockQuantity());
-            preparedStatement.setString(10,newProduct.getPlaceOfProduction());
-            preparedStatement.setTimestamp(11, Timestamp.valueOf(newProduct.getCreationProductDate()));
+            preparedStatement.setDouble(5, newProduct.getPrice());
+            preparedStatement.setDate(6, Date.valueOf(newProduct.getExpirationDate()));
+            preparedStatement.setInt(7, newProduct.getStockQuantity());
+            preparedStatement.setTimestamp(8, newProduct.getCreationProductDate());
+
+            preparedStatement.executeUpdate(); // Bu satır eklendi
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void printAllProduct() {
@@ -46,11 +56,9 @@ public class StockJDBC implements MarketDataAccess {
                 String product_name = resultSet.getString("product_name");
                 String description = resultSet.getString("description");
                 double price = resultSet.getDouble("price");
-                double weight = resultSet.getDouble("weight");
-                Timestamp productionDate = resultSet.getTimestamp("production_date");
-                Timestamp expirationDate = resultSet.getTimestamp("expiration_date");
+                String productionDate = resultSet.getString("production_date");
+                String expirationDate = resultSet.getString("expiration_date");
                 int stockQuantity = resultSet.getInt("stock_quantity");
-                String placeOfProduction = resultSet.getString("place_of_production");
                 Timestamp creationProductDate = resultSet.getTimestamp("creation_product_date");
                 System.out.println(
                         "Product ID: " + productId +
@@ -58,11 +66,9 @@ public class StockJDBC implements MarketDataAccess {
                                 ", Product Name: " + product_name +
                                 ", Description: " + description +
                                 ", Price: " + price +
-                                ", Weight: " + weight +
                                 ", Production Date: " + productionDate +
                                 ", Expiration Date: " + expirationDate +
                                 ", Stock Quantity: " + stockQuantity +
-                                ", Place of Production: " + placeOfProduction +
                                 ", Creation Product Date: " + creationProductDate
                 );
 

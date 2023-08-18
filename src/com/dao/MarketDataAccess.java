@@ -7,6 +7,8 @@ import com.domain.SubCategory;
 import java.util.ArrayList;
 
 public interface MarketDataAccess {
+    void addCategory(Category newCategory);
+    void addSubCategory(SubCategory newSubCategory);
     void addProduct(Product newProduct);
     void printAllProduct();
     public Product getIdByBarcode(int productId);
