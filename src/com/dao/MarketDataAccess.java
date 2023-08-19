@@ -11,6 +11,8 @@ public interface MarketDataAccess {
     void addSubCategory(SubCategory newSubCategory);
     void addProduct(Product newProduct);
     void printAllProduct();
+    void printAllCategory();
+    void printAllSubCategory();
     public Product getIdByBarcode(int productId);
 
     ArrayList<Product> getProductsByCategory(Category category);

@@ -14,8 +14,10 @@ public class MarketDriver {
         StockJDBC stockJDBC = new StockJDBC();
         //stockJDBC.addCategory(category);
         //stockJDBC.addSubCategory(subCategory);
-        stockJDBC.addProduct(product1);
-        //stockJDBC.printAllProduct();
+        //stockJDBC.addProduct(product1);
+        stockJDBC.printAllProduct();
+        stockJDBC.printAllCategory();
+        stockJDBC.printAllSubCategory();
     }
 
 }
