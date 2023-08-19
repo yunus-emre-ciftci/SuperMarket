@@ -1,7 +1,6 @@
 package com.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
 
 public class SubCategory {
@@ -9,15 +8,20 @@ public class SubCategory {
     private int subCategoryId;
     private String subCategoryName;
     private String description;
-    private static List<SubCategory> subCategories = new ArrayList<>();
+    private Date creationSubCategoryDate;
+    private Date updateSubCategoryDate;
+
 
     public SubCategory(Category category, int subCategoryId, String subCategoryName, String description) {
         this.category = category;
         this.subCategoryId = subCategoryId;
         this.subCategoryName = subCategoryName;
         this.description = description;
-        subCategories.add(this);
+        this.creationSubCategoryDate = new Date();
+        this.updateSubCategoryDate = new Date();
+
     }
+
 
     @Override
     public String toString() {
@@ -27,6 +31,18 @@ public class SubCategory {
                 ", subCategoryName=" + subCategoryName +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public Date getUpdateDate() {
+        return updateSubCategoryDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateSubCategoryDate = updateDate;
+    }
+
+    public Date getCreationSubCategoryDate() {
+        return creationSubCategoryDate;
     }
 
     public Category getCategory() {
@@ -43,10 +59,6 @@ public class SubCategory {
 
     public String getDescription() {
         return description;
-    }
-
-    public static List<SubCategory> getSubCategories() {
-        return subCategories;
     }
 
     public void setSubCategoryId(int subCategoryId) {

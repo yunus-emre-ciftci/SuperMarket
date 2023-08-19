@@ -16,7 +16,6 @@ public class Product {
     private String expirationDate;
     private int stockQuantity;
     private Timestamp creationProductDate;
-    private static List<Product> allProducts = new ArrayList<>();
 
     public Product(SubCategory subCategory, int productId, String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
         this.subCategory = subCategory;
@@ -27,7 +26,6 @@ public class Product {
         this.stockQuantity = stockQuantity;
         this.expirationDate = expirationDate;
         this.creationProductDate = Timestamp.valueOf(LocalDateTime.now());
-        allProducts.add(this);
 
     }
 
@@ -35,12 +33,8 @@ public class Product {
         this(subCategory,productId,productName,price,expirationDate,stockQuantity,expirationDate);
         this.description = description;
         this.creationProductDate = Timestamp.valueOf(LocalDateTime.now());
-        allProducts.add(this);
     }
 
-    public List<Product> getAllProducts() {
-        return allProducts;
-    }
 
     public SubCategory getSubCategory() {
         return subCategory;
