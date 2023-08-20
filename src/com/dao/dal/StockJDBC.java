@@ -161,14 +161,10 @@ public class StockJDBC implements MarketDataAccess {
 
 
     @Override
-    public Product getIdByBarcode(int productId) {
-        return null;
+    public ArrayList<Product> getProductsByCategory(Category category) {
+        return getExpiredProducts();
     }
 
-    @Override
-    public ArrayList<Product> getProductsByCategory(Category category) {
-        return null;
-    }
 
     @Override
     public ArrayList<Product> getProductsBySubCategory(SubCategory subCategory) {
