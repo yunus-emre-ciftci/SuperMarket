@@ -16,6 +16,7 @@ public class Product {
     private String expirationDate;
     private int stockQuantity;
     private Timestamp creationProductDate;
+    private static int counter = 1;
 
     public Product(SubCategory subCategory, int productId, String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
         this.subCategory = subCategory;
