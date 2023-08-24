@@ -8,6 +8,7 @@ import com.util.DBDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class StockJDBC implements MarketDataAccess {
     @Override
@@ -162,7 +163,33 @@ public class StockJDBC implements MarketDataAccess {
 
     @Override
     public ArrayList<Product> getProductsByCategory(Category category) {
-        return getExpiredProducts();
+        ArrayList<Product> productList = new ArrayList<>();
+        String query = "SELECT p.* \n" +
+                "FROM Product p\n" +
+                "INNER JOIN SubCategory sc ON p.subCategoryId = sc.subCategoryId\n" +
+                "INNER JOIN Category c ON sc.categoryId = c.categoryId\n" +
+                "WHERE c.categoryId = ?";
+        try (Connection connection = DBDataSource.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)
+        ) {
+            preparedStatement.setInt(1, category.getCategoryId());
+           ResultSet resultSet = preparedStatement.executeQuery();
+           while (resultSet.next()){
+               String productName = resultSet.getString("productName");
+               String description = resultSet.getString("description");
+               double price = resultSet.getDouble("price");
+               String productionDate = resultSet.getString("productionDate");
+               String expirationDate = resultSet.getString("expirationDate");
+               int stockQuantity = resultSet.getInt("stockQuantity");
+               Timestamp creationProductDate = resultSet.getTimestamp("creationProductDate");
+               Product product = new Product(null,description,productName,price,productionDate,stockQuantity,expirationDate);
+               productList.add(product);
+
+           }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return productList;
     }
 
 

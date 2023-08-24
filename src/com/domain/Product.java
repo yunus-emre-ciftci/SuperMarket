@@ -18,7 +18,8 @@ public class Product {
     private Timestamp creationProductDate;
     private static int counter = 1;
 
-    public Product(SubCategory subCategory,String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
+    public Product(SubCategory subCategory, String description, String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
+        this.description = description;
         this.subCategory = subCategory;
         this.productId = counter++;
         this.productName = productName;
