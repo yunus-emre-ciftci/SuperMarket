@@ -18,9 +18,9 @@ public class Product {
     private Timestamp creationProductDate;
     private static int counter = 1;
 
-    public Product(SubCategory subCategory, int productId, String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
+    public Product(SubCategory subCategory,String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
         this.subCategory = subCategory;
-        this.productId = productId;
+        this.productId = counter++;
         this.productName = productName;
         this.price = price;
         this.productionDate = productionDate;
@@ -29,13 +29,6 @@ public class Product {
         this.creationProductDate = Timestamp.valueOf(LocalDateTime.now());
 
     }
-
-    public Product(SubCategory subCategory, int productId, String productName, String description, double price, int stockQuantity, String expirationDate) {
-        this(subCategory,productId,productName,price,expirationDate,stockQuantity,expirationDate);
-        this.description = description;
-        this.creationProductDate = Timestamp.valueOf(LocalDateTime.now());
-    }
-
 
     public SubCategory getSubCategory() {
         return subCategory;

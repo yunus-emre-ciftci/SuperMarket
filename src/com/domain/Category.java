@@ -11,10 +11,11 @@ public class Category {
     private String description;
     private Date creationDate;
     private Date updateDate;
+    private static int counter = 1;
 
 
-    public Category(int categoryId, String categoryName, String description) {
-        this.categoryId = categoryId;
+    public Category(String categoryName, String description) {
+        this.categoryId = counter++;
         this.categoryName = categoryName;
         this.description = description;
         this.creationDate = new Date();

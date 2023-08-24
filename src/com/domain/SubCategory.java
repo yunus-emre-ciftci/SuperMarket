@@ -10,11 +10,12 @@ public class SubCategory {
     private String description;
     private Date creationSubCategoryDate;
     private Date updateSubCategoryDate;
+    private static int counter = 1;
 
 
-    public SubCategory(Category category, int subCategoryId, String subCategoryName, String description) {
+    public SubCategory(Category category, String subCategoryName, String description) {
         this.category = category;
-        this.subCategoryId = subCategoryId;
+        this.subCategoryId = counter++;
         this.subCategoryName = subCategoryName;
         this.description = description;
         this.creationSubCategoryDate = new Date();
