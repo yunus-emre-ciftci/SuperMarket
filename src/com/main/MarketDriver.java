@@ -18,7 +18,7 @@ public class MarketDriver {
         //stockJDBC.addProduct(product3);
         //stockJDBC.printAllProduct();
         //stockJDBC.printAllCategory();
-        //stockJDBC.printAllSubCategory();
+        stockJDBC.printAllSubCategory();
         for (Product product : stockJDBC.getProductsByCategory(category)) {
             System.out.println(product);
         }
