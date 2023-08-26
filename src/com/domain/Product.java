@@ -12,10 +12,10 @@ public class Product {
     private String productName;
     private String description;
     private double price;
-    private String productionDate;
-    private String expirationDate;
+    private LocalDateTime productionDate;
+    private LocalDateTime expirationDate;
     private int stockQuantity;
-    private Timestamp creationProductDate;
+    private LocalDateTime creationProductDate;
     private static int counter = 1;
 
     public Product(SubCategory subCategory, String description, String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
@@ -24,10 +24,10 @@ public class Product {
         this.productId = counter++;
         this.productName = productName;
         this.price = price;
-        this.productionDate = productionDate;
+        this.productionDate = LocalDateTime.now();
         this.stockQuantity = stockQuantity;
-        this.expirationDate = expirationDate;
-        this.creationProductDate = Timestamp.valueOf(LocalDateTime.now());
+        this.expirationDate = LocalDateTime.now();
+        this.creationProductDate = LocalDateTime.now();
 
     }
 
@@ -51,11 +51,11 @@ public class Product {
         return price;
     }
 
-    public String getProductionDate() {
+    public LocalDateTime getProductionDate() {
         return productionDate;
     }
 
-    public String getExpirationDate() {
+    public LocalDateTime getExpirationDate() {
         return expirationDate;
     }
 
@@ -64,7 +64,7 @@ public class Product {
     }
 
 
-    public Timestamp getCreationProductDate() {
+    public LocalDateTime getCreationProductDate() {
         return creationProductDate;
     }
 
@@ -84,11 +84,11 @@ public class Product {
         this.price = price;
     }
 
-    public void setProductionDate(String productionDate) {
+    public void setProductionDate(LocalDateTime productionDate) {
         this.productionDate = productionDate;
     }
 
-    public void setExpirationDate(String expirationDate) {
+    public void setExpirationDate(LocalDateTime expirationDate) {
         this.expirationDate = expirationDate;
     }
 

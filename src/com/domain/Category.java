@@ -1,5 +1,6 @@
 package com.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,8 +10,8 @@ public class Category {
     private int categoryId;
     private String categoryName;
     private String description;
-    private Date creationDate;
-    private Date updateDate;
+    private LocalDateTime creationDate;
+    private LocalDateTime updateDate;
     private static int counter = 1;
 
 
@@ -18,8 +19,8 @@ public class Category {
         this.categoryId = counter++;
         this.categoryName = categoryName;
         this.description = description;
-        this.creationDate = new Date();
-        this.updateDate = new Date();
+        this.creationDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
     }
 
 
@@ -49,12 +50,12 @@ public class Category {
     }
 
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
@@ -73,7 +74,7 @@ public class Category {
     }
 
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
     }
 

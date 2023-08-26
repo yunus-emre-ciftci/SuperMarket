@@ -1,5 +1,6 @@
 package com.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,8 +9,8 @@ public class SubCategory {
     private int subCategoryId;
     private String subCategoryName;
     private String description;
-    private Date creationSubCategoryDate;
-    private Date updateSubCategoryDate;
+    private LocalDateTime creationSubCategoryDate;
+    private LocalDateTime updateSubCategoryDate;
     private static int counter = 1;
 
 
@@ -18,8 +19,8 @@ public class SubCategory {
         this.subCategoryId = counter++;
         this.subCategoryName = subCategoryName;
         this.description = description;
-        this.creationSubCategoryDate = new Date();
-        this.updateSubCategoryDate = new Date();
+        this.creationSubCategoryDate = LocalDateTime.now();
+        this.updateSubCategoryDate = LocalDateTime.now();
 
     }
 
@@ -34,15 +35,15 @@ public class SubCategory {
                 '}';
     }
 
-    public Date getUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateSubCategoryDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateSubCategoryDate = updateDate;
     }
 
-    public Date getCreationSubCategoryDate() {
+    public LocalDateTime getCreationSubCategoryDate() {
         return creationSubCategoryDate;
     }
 
