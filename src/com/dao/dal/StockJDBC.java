@@ -164,10 +164,10 @@ public class StockJDBC implements MarketDataAccess {
     @Override
     public ArrayList<Product> getProductsByCategory(Category category) {
         ArrayList<Product> productList = new ArrayList<>();
-        String query = "SELECT p.* \n" +
-                "FROM Product p\n" +
-                "INNER JOIN SubCategory sc ON p.subCategoryId = sc.subCategoryId\n" +
-                "INNER JOIN Category c ON sc.categoryId = c.categoryId\n" +
+        String query = "SELECT p.*, sc.subCategoryId, sc.subCategoryName, c.categoryId, c.categoryName, c.description AS categoryDescription " +
+                "FROM Product p " +
+                "INNER JOIN SubCategory sc ON p.subCategoryId = sc.subCategoryId " +
+                "INNER JOIN Category c ON sc.categoryId = c.categoryId " +
                 "WHERE c.categoryId = ?";
         try (Connection connection = DBDataSource.connect();
              PreparedStatement preparedStatement = connection.prepareStatement(query)
@@ -182,7 +182,12 @@ public class StockJDBC implements MarketDataAccess {
                String expirationDate = resultSet.getString("expirationDate");
                int stockQuantity = resultSet.getInt("stockQuantity");
                Timestamp creationProductDate = resultSet.getTimestamp("creationProductDate");
-               Product product = new Product(null,description,productName,price,productionDate,stockQuantity,expirationDate);
+
+               String subCategoryName = resultSet.getString("subcategoryname");
+               String subCategoryDescription = resultSet.getString("description");
+               SubCategory subCategory = new SubCategory(category,subCategoryName,subCategoryDescription);
+
+               Product product = new Product(subCategory,description,productName,price,productionDate,stockQuantity,expirationDate);
                productList.add(product);
 
            }
