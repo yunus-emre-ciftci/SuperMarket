@@ -202,10 +202,10 @@ public class StockJDBC implements MarketDataAccess {
                 String productName = resultSet.getString("productName");
                 String description = resultSet.getString("description");
                 double price = resultSet.getDouble("price");
+
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String dateString = resultSet.getString("productiondate");
                 LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
-
                 int year = dateTime.getYear();
                 int month = dateTime.getMonthValue();
                 int day = dateTime.getDayOfMonth();
@@ -218,12 +218,20 @@ public class StockJDBC implements MarketDataAccess {
                 int day1 = dateTime1.getDayOfMonth();
 
                 int stockQuantity = resultSet.getInt("stockQuantity");
-                Timestamp creationProductDate = resultSet.getTimestamp("creationProductDate");
                 String subCategoryName = resultSet.getString("subcategoryname");
                 String subCategoryDescription = resultSet.getString("description");
                 SubCategory subCategory = new SubCategory(category, subCategoryName, subCategoryDescription);
-
-                Product product = new Product(subCategory, description, productName, price, year, month, day, stockQuantity, year1, month1, day1);
+                Product product = new Product(subCategory,
+                        description,
+                        productName,
+                        price,
+                        year,
+                        month,
+                        day,
+                        stockQuantity,
+                        year1,
+                        month1,
+                        day1);
                 productList.add(product);
 
             }
@@ -236,13 +244,109 @@ public class StockJDBC implements MarketDataAccess {
 
     @Override
     public ArrayList<Product> getProductsBySubCategory(SubCategory subCategory) {
-        return null;
+        ArrayList<Product> productList = new ArrayList<>();
+        String query = "SELECT p.*, c.categoryName, c.description AS categoryDescription " +
+                "FROM Product p " +
+                "INNER JOIN SubCategory sc ON p.subCategoryId = sc.subCategoryId " +
+                "INNER JOIN Category c ON sc.categoryId = c.categoryId " +
+                "WHERE sc.subCategoryId = ?";
+        try (Connection connection = DBDataSource.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)
+        ) {
+            preparedStatement.setInt(1, subCategory.getSubCategoryId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String productName = resultSet.getString("productName");
+                String description = resultSet.getString("description");
+                double price = resultSet.getDouble("price");
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String dateString = resultSet.getString("productiondate");
+                LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+                int year = dateTime.getYear();
+                int month = dateTime.getMonthValue();
+                int day = dateTime.getDayOfMonth();
+
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String dateString1 = resultSet.getString("expirationdate");
+                LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter1);
+                int year1 = dateTime1.getYear();
+                int month1 = dateTime1.getMonthValue();
+                int day1 = dateTime1.getDayOfMonth();
+                int stockQuantity = resultSet.getInt("stockQuantity");
+                Product product = new Product(subCategory,
+                        description,
+                        productName,
+                        price,
+                        year,
+                        month,
+                        day,
+                        stockQuantity,
+                        year1,
+                        month1,
+                        day1);
+                productList.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productList;
     }
+
 
     @Override
     public ArrayList<Product> getExpiredProducts() {
-        return null;
+        ArrayList<Product> expiredProducts = new ArrayList<>();
+        String query = "SELECT p.*, sc.subCategoryId, sc.subCategoryName " +
+                "FROM Product p " +
+                "INNER JOIN SubCategory sc ON p.subCategoryId = sc.subCategoryId " +
+                "WHERE expirationDate < NOW()";
+        try (Connection connection = DBDataSource.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                int productId = resultSet.getInt("productId");
+                String productName = resultSet.getString("productName");
+                String description = resultSet.getString("description");
+                double price = resultSet.getDouble("price");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String dateString = resultSet.getString("productiondate");
+                LocalDateTime dateTime = LocalDateTime.parse(dateString, formatter);
+                int year = dateTime.getYear();
+                int month = dateTime.getMonthValue();
+                int day = dateTime.getDayOfMonth();
+
+                DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String dateString1 = resultSet.getString("expirationdate");
+                LocalDateTime dateTime1 = LocalDateTime.parse(dateString1, formatter1);
+                int year1 = dateTime1.getYear();
+                int month1 = dateTime1.getMonthValue();
+                int day1 = dateTime1.getDayOfMonth();
+                int stockQuantity = resultSet.getInt("stockQuantity");
+
+                String subCategoryName = resultSet.getString("subCategoryName");
+                SubCategory subCategory = new SubCategory(null, subCategoryName, null);
+
+                Product product = new Product(subCategory,
+                        description,
+                        productName,
+                        price,
+                        year,
+                        month,
+                        day,
+                        stockQuantity,
+                        year1,
+                        month1,
+                        day1);
+                product.setProductId(productId);
+                expiredProducts.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return expiredProducts;
     }
+
 
     @Override
     public ArrayList<Product> getProductsInStock() {
