@@ -7,6 +7,7 @@ import com.domain.SubCategory;
 import com.util.DBDataSource;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +68,12 @@ public class StockJDBC implements MarketDataAccess {
             preparedStatement.setString(3, newProduct.getProductName());
             preparedStatement.setString(4, newProduct.getDescription());
             preparedStatement.setDouble(5, newProduct.getPrice());
-            preparedStatement.setDate(6, Date.valueOf(newProduct.getProductionDate()));
-            preparedStatement.setDate(7, Date.valueOf(newProduct.getExpirationDate()));
+            LocalDate localDate = newProduct.getProductionDate();
+            Timestamp timestamp = Timestamp.valueOf(localDate.atStartOfDay());
+            preparedStatement.setTimestamp(6, timestamp);
+            LocalDate localDate1 = newProduct.getExpirationDate();
+            Timestamp timestamp1 = Timestamp.valueOf(localDate1.atStartOfDay());
+            preparedStatement.setTimestamp(7, timestamp1);
             preparedStatement.setInt(8, newProduct.getStockQuantity());
             LocalDateTime creationProductDate = newProduct.getCreationProductDate();
             Timestamp creationTimestamp = Timestamp.valueOf(creationProductDate);
@@ -189,8 +194,8 @@ public class StockJDBC implements MarketDataAccess {
                 String productName = resultSet.getString("productName");
                 String description = resultSet.getString("description");
                 double price = resultSet.getDouble("price");
-                String productionDate = resultSet.getString("productionDate");
-                String expirationDate = resultSet.getString("expirationDate");
+                int productionDate = resultSet.getInt("productionDate");
+                int expirationDate = resultSet.getInt("expirationDate");
                 int stockQuantity = resultSet.getInt("stockQuantity");
                 Timestamp creationProductDate = resultSet.getTimestamp("creationProductDate");
 
@@ -198,7 +203,7 @@ public class StockJDBC implements MarketDataAccess {
                 String subCategoryDescription = resultSet.getString("description");
                 SubCategory subCategory = new SubCategory(category, subCategoryName, subCategoryDescription);
 
-                Product product = new Product(subCategory, description, productName, price, productionDate, stockQuantity, expirationDate);
+                Product product = new Product(subCategory, description, productName, price, productionDate, 0,0,stockQuantity, expirationDate,0,0);
                 productList.add(product);
 
             }

@@ -1,6 +1,7 @@
 package com.domain;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +13,21 @@ public class Product {
     private String productName;
     private String description;
     private double price;
-    private LocalDateTime productionDate;
-    private LocalDateTime expirationDate;
+    private LocalDate productionDate;
+    private LocalDate expirationDate;
     private int stockQuantity;
     private LocalDateTime creationProductDate;
     private static int counter = 1;
 
-    public Product(SubCategory subCategory, String description, String productName, double price, String productionDate, int stockQuantity, String expirationDate) {
+    public Product(SubCategory subCategory, String description, String productName, double price, int productionDateYear, int productionDateMonths,int productionDateDays, int stockQuantity, int expirationDateYear, int expirationDateMonths,int expirationDateDays) {
         this.description = description;
         this.subCategory = subCategory;
         this.productId = counter++;
         this.productName = productName;
         this.price = price;
-        this.productionDate = LocalDateTime.now();
+        this.productionDate = LocalDate.of(productionDateYear,productionDateMonths,productionDateDays);
+        this.expirationDate = LocalDate.of(expirationDateYear,expirationDateMonths,expirationDateDays);
         this.stockQuantity = stockQuantity;
-        this.expirationDate = LocalDateTime.now();
         this.creationProductDate = LocalDateTime.now();
 
     }
@@ -51,11 +52,11 @@ public class Product {
         return price;
     }
 
-    public LocalDateTime getProductionDate() {
+    public LocalDate getProductionDate() {
         return productionDate;
     }
 
-    public LocalDateTime getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
@@ -84,11 +85,11 @@ public class Product {
         this.price = price;
     }
 
-    public void setProductionDate(LocalDateTime productionDate) {
+    public void setProductionDate(LocalDate productionDate) {
         this.productionDate = productionDate;
     }
 
-    public void setExpirationDate(LocalDateTime expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 
