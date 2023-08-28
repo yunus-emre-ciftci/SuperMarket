@@ -1,6 +1,6 @@
 package com.dao.dal;
 
-import com.dao.MarketDataAccess;
+import com.dao.ProductDataAccess;
 import com.domain.Category;
 import com.domain.Product;
 import com.domain.SubCategory;
@@ -11,54 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-public class StockJDBC implements MarketDataAccess {
-    @Override
-    public void addCategory(Category newCategory) {
-        String addQuery = "INSERT INTO category (categoryid, categoryname, description, creationDate, updateDate) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DBDataSource.connect();
-             PreparedStatement preparedStatement = connection.prepareStatement(addQuery)
-        ) {
-            preparedStatement.setInt(1, newCategory.getCategoryId());
-            preparedStatement.setString(2, newCategory.getCategoryName().toUpperCase());
-            preparedStatement.setString(3, newCategory.getDescription().toUpperCase());
-            LocalDateTime creationDate = newCategory.getCreationDate();
-            Timestamp creationTimestamp = Timestamp.valueOf(creationDate);
-            preparedStatement.setTimestamp(4, creationTimestamp);
-            LocalDateTime updateDate = newCategory.getUpdateDate();
-            Timestamp updateTimestamp = Timestamp.valueOf(updateDate);
-            preparedStatement.setTimestamp(5, updateTimestamp);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void addSubCategory(SubCategory newSubCategory) {
-        String addQuery = "INSERT INTO subcategory (subcategoryid, categoryid, subcategoryname, description, creationDate, updateDate) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DBDataSource.connect();
-             PreparedStatement preparedStatement = connection.prepareStatement(addQuery)
-        ) {
-            preparedStatement.setInt(1, newSubCategory.getSubCategoryId());
-            preparedStatement.setInt(2, newSubCategory.getCategory().getCategoryId());
-            preparedStatement.setString(3, newSubCategory.getSubCategoryName().toUpperCase());
-            preparedStatement.setString(4, newSubCategory.getDescription().toUpperCase());
-            LocalDateTime localDateTime = newSubCategory.getCreationSubCategoryDate();
-            Timestamp timestamp = Timestamp.valueOf(localDateTime);
-            preparedStatement.setTimestamp(5, timestamp);
-            LocalDateTime localDateTime1 = newSubCategory.getUpdateDate();
-            Timestamp timestamp1 = Timestamp.valueOf(localDateTime1);
-            preparedStatement.setTimestamp(6, timestamp1);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
+public class ProductJDBC implements ProductDataAccess {
     @Override
     public void addProduct(Product newProduct) {
         String addQuery = "INSERT INTO product (productid, subcategoryid, productname, description, price, productiondate, expirationdate, stockquantity, creationproductdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -86,15 +41,17 @@ public class StockJDBC implements MarketDataAccess {
         }
     }
 
-
     @Override
     public void printAllProduct() {
         String query = "SELECT * FROM product";
         try (Connection connection = DBDataSource.connect();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
+            if (!resultSet.next()) {
+                System.out.println("Product not found.");
+                return;
+            }
+            do {
                 int productId = resultSet.getInt("productId");
                 int subCategoryId = resultSet.getInt("subCategoryId");
                 String productName = resultSet.getString("productName");
@@ -123,70 +80,13 @@ public class StockJDBC implements MarketDataAccess {
                                 ", Stock Quantity: " + stockQuantity +
                                 ", Creation Product Date: " + creationProductDate
                 );
-            }
+            } while (resultSet.next());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    @Override
-    public void printAllCategory() {
-        String query = "SELECT * FROM category";
-        try (Connection connection = DBDataSource.connect();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                int categoryId = resultSet.getInt("categoryId");
-                String categoryName = resultSet.getString("categoryName");
-                String description = resultSet.getString("description");
-                Timestamp creationDate = resultSet.getTimestamp("creationDate");
-                Timestamp updateDate = resultSet.getTimestamp("updateDate");
-
-                System.out.println(
-                        "Category ID: " + categoryId +
-                                ", Category Name: " + categoryName.toUpperCase(Locale.UK) +
-                                ", Description: " + description.toUpperCase(Locale.UK) +
-                                ", Creation Date: " + creationDate +
-                                ", Update Date: " + updateDate
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void printAllSubCategory() {
-        String query = "SELECT * FROM subcategory";
-        try (Connection connection = DBDataSource.connect();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while (resultSet.next()) {
-                int subCategoryId = resultSet.getInt("subCategoryId");
-                int categoryId = resultSet.getInt("categoryId");
-                String subCategoryName = resultSet.getString("subCategoryName");
-                String description = resultSet.getString("description");
-                Timestamp creationDate = resultSet.getTimestamp("creationDate");
-                Timestamp updateDate = resultSet.getTimestamp("updateDate");
-
-                System.out.println(
-                        "Subcategory ID: " + subCategoryId +
-                                ", Category ID: " + categoryId +
-                                ", Subcategory Name: " + subCategoryName.toUpperCase(Locale.UK) +
-                                ", Description: " + description.toUpperCase(Locale.UK) +
-                                ", Creation Date: " + creationDate +
-                                ", Update Date: " + updateDate
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
     public ArrayList<Product> getProductsByCategory(Category category) {
         ArrayList<Product> productList = new ArrayList<>();
         String query = "SELECT p.*, sc.subCategoryId, sc.subCategoryName, c.categoryId, c.categoryName, c.description AS categoryDescription " +
@@ -426,16 +326,6 @@ public class StockJDBC implements MarketDataAccess {
 
 
     @Override
-    public int getProductCountByCategory(Category category) {
-        return 0;
-    }
-
-    @Override
-    public int getProductCountBySubCategory(SubCategory subCategory) {
-        return 0;
-    }
-
-    @Override
     public ArrayList<Product> getProductsOutOfStock() {
         ArrayList<Product> outOfStockProducts = new ArrayList<>();
         String query = "SELECT p.*, sc.subCategoryId, sc.subCategoryName, c.categoryId, c.categoryName, c.description AS categoryDescription " +
@@ -571,6 +461,18 @@ public class StockJDBC implements MarketDataAccess {
         }
 
         return null;
+    }
+
+    public boolean deleteAllProducts() {
+        String query = "DELETE FROM Product";
+        try (Connection connection = DBDataSource.connect();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            int affectedRows = preparedStatement.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

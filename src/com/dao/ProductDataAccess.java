@@ -6,23 +6,17 @@ import com.domain.SubCategory;
 
 import java.util.ArrayList;
 
-public interface MarketDataAccess {
-    void addCategory(Category newCategory);
-    void addSubCategory(SubCategory newSubCategory);
+public interface ProductDataAccess {
     void addProduct(Product newProduct);
     void printAllProduct();
-    void printAllCategory();
-    void printAllSubCategory();
-
     ArrayList<Product> getProductsByCategory(Category category);
     ArrayList<Product> getProductsBySubCategory(SubCategory subCategory);
     ArrayList<Product> getExpiredProducts();
     ArrayList<Product> getProductsInStock();
     boolean updateStockQuantity(int productId, int newStockQuantity);
-    int getProductCountByCategory(Category category);
-    int getProductCountBySubCategory(SubCategory subCategory);
     ArrayList<Product> getProductsOutOfStock();
     ArrayList<Product> findProductByName(String productName);
     Product deleteProduct(Product product);
+    public boolean deleteAllProducts();
     Product updateProduct(Product product, int id);
 }

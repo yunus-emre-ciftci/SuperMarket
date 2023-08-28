@@ -1,6 +1,6 @@
 package com.main;
 
-import com.dao.dal.StockJDBC;
+import com.dao.dal.ProductJDBC;
 import com.domain.Category;
 import com.domain.Product;
 import com.domain.SubCategory;
@@ -16,19 +16,10 @@ public class MarketDriver {
         Product product3 = new Product(subCategory, "Bad", "Doritos", 2.3, 2022, 12, 31, 110, 2027, 11, 5);
         Product product4 = new Product(subCategory, "Good", "Alaturka", 2.9, 2021, 12, 31, 110, 2022, 11, 5);
         Product product5 = new Product(subCategory, "Good", "Pringles", 4.0, 2023, 12, 31, 10, 2025, 11, 5);
-        StockJDBC stockJDBC = new StockJDBC();
-        //stockJDBC.addCategory(category1);
-        //stockJDBC.addSubCategory(subCategory1);
-        //stockJDBC.addProduct(product5);
-        stockJDBC.updateProduct(product1,5);
-        stockJDBC.printAllProduct();
-        //stockJDBC.printAllCategory();
-        //stockJDBC.printAllSubCategory();
-        //stockJDBC.updateStockQuantity(1,0);
-        //stockJDBC.deleteProduct(product1);
-        /*for (Product product : stockJDBC.findProductByName("pringles")) {
-            System.out.println(product);
-        }*/
+        ProductJDBC productJDBC = new ProductJDBC();
+        productJDBC.addProduct(product5);
+        //productJDBC.deleteAllProducts();
+        productJDBC.printAllProduct();
     }
 
 }
