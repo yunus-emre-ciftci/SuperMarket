@@ -515,4 +515,9 @@ public class ProductJDBC implements ProductDataAccess {
             return null;
         }
     }
+
+    @Override
+    public Product addToCart(Product product) {
+        return null;
+    }
 }

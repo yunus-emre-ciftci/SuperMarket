@@ -19,4 +19,5 @@ public interface ProductDataAccess {
     Product deleteProduct(Product product);
     public boolean deleteAllProducts();
     Product updateProduct(Product product, int id);
+    Product addToCart(Product product);
 }
